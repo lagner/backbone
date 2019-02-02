@@ -10,3 +10,8 @@ moc_*.cpp
 *.so.*
 *.dll
 *.exe
+
+build/
+.idea/
+
+
