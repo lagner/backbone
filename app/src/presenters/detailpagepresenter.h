@@ -20,6 +20,6 @@ signals:
     void modelChanged();
 
 private:
-    QObject * model_;
+    QObject * model_ = nullptr;
     ContextPtr context_;
 };

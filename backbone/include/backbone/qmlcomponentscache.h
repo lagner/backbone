@@ -2,6 +2,7 @@
 #include <QtCore/QObject>
 #include <QtCore/QUrl>
 #include <QtCore/QHash>
+#include <portable_concurrency/future_fwd>
 #include "incubator.h"
 
 QT_FORWARD_DECLARE_CLASS(QQmlEngine)
@@ -24,6 +25,8 @@ public:
     Incubator * create(const QUrl & url, InjectorCallback injector);
 
     // TODO: trimMemory slot
+
+    pc::future<QQmlComponent*> resolve(const QUrl & url);
 
 private:
     QQmlEngine * const engine_ = nullptr;

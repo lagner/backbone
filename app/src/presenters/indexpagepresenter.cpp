@@ -46,7 +46,10 @@ void IndexPagePresenter::searchByText(QString pattern)
     Q_UNUSED(pattern);
 
     if (!router || !usecase_)
+    {
+        qWarning("route or usecase is not defined");
         return;
+    }
 
     usecase_->search(pattern);
 

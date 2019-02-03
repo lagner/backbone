@@ -4,38 +4,40 @@ import Backbone 1.0 as Backbone
 import App.Presenters 1.0
 
 
-Backbone.Page { // container
-    Rectangle { // view
-        property DetailPagePresenter presenter;
+Rectangle { // view
+    property DetailPagePresenter presenter;
 
+    color: "silver"
+
+    ColumnLayout {
         anchors.fill: parent
-        color: "silver"
+        anchors.margins: 20
+        spacing: 10
 
-        ColumnLayout {
-            anchors.fill: parent
-            anchors.margins: 20
-            spacing: 10
+        Rectangle {
+            width: 100
+            height: 100
 
-            Rectangle {
-                width: 100
-                height: 100
-
-                // TODO: color from item
-                color: presenter.model.color
-            }
-
-
-            Text {
-                id: description
-                Layout.fillHeight: true
-
-                // TODO: get from model item
-                text: presenter.model.id + " - " + presenter.model.color
-            }
-
-            // TODO: add blocks
-
-            // TODO: add one mannually loading block
+            // TODO: color from item
+            color: !!presenter.model ? presenter.model.color : "green"
         }
+
+
+        Text {
+            id: description
+            Layout.fillHeight: true
+
+            // TODO: get from model item
+            text: {
+                if (presenter.model) {
+                    return presenter.model.id + " - " + presenter.model.color;
+                }
+                return "";
+            }
+        }
+
+        // TODO: add blocks
+
+        // TODO: add one mannually loading block
     }
 }

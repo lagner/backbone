@@ -6,7 +6,6 @@
 #include <QtQml/QQmlComponent>
 #include <QtQuick/QQuickItem>
 #include "qmlinjector.h"
-#include "args.h"
 #include "qmlcomponentscache.h"
 
 
@@ -30,12 +29,14 @@ public:
     int depth() const;
 
 signals:
+    void pushUrl(QUrl url);
+
     // TODO: make it private
     void pushPage(QQuickItem * page);
     void popPage();
 
     // FIXME: replace for QVariantMap
-    void replace(QString page, Backbone::ArgsWeakWrapper args);
+    // void replace(QString page, Backbone::ArgsWeakWrapper args);
 
 private slots:
     void onWindowReady(QObject * root, const QUrl&);

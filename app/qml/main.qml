@@ -1,7 +1,6 @@
 import QtQuick 2.9
 import QtQuick.Window 2.2
 import QtQuick.Controls 2.2
-// import QtQuick.Controls 1.4 as OldControls
 import Backbone 1.0 as Backbone
 
 
@@ -13,43 +12,33 @@ Window {
     height: 480
     title: qsTr("DI Application")
 
-    // Old controls. Legacy
-
-    /*
-    OldControls.StackView {
-        id: stackView
-        anchors.fill: parent
-        initialItem: Qt.resolvedUrl("index.qml")
-    }
-
-    Connections {
-        target: router
-        onPushPage: {
-            var params = {
-                "item": Qt.resolvedUrl(page),
-                "properties": { "args": args }
-            };
-            stackView.push(params);
-        }
-
-        onPop: stackView.pop()
-    }
-    */
-
-    // -------------------------------------------------------------------------
-
-    // Controls 2 prefered impl
     StackView {
         id: stack
         anchors.fill: parent
-        initialItem: Qt.resolvedUrl("index.qml")
+
+        Component.onCompleted: stack.openPage(Qt.resolvedUrl("index.qml"))
+
+        function openPage(pageUrl) {
+            var stackView = stack;
+            appController.create(pageUrl, function (page) {
+                if (stackView) {
+                    stackView.push(page);
+                } else {
+                    console.error("stackView is not available any more");
+                }
+            });
+        }
     }
 
     Connections {
         target: router
 
-        onPushPage: stack.push(page);
+        onPushPage: stack.openPage(page);
         onPopPage: stack.pop();
-        onReplace: stack.replace(Qt.resolvedUrl(page), { "args": args });
+
+        onPushUrl: {
+            console.log("push url: ", url);
+            stack.openPage(url);
+        }
     }
 }

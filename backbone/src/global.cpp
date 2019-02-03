@@ -1,5 +1,4 @@
 #include <backbone/appcontroller.h>
-#include <backbone/args.h>
 #include <backbone/block.h>
 #include <backbone/global.h>
 #include <backbone/page.h>
@@ -21,7 +20,6 @@ void import()
 {
     // @uri Backbone
     qmlRegisterUncreatableType<AppController>(NS, 1, 0, "AppController", "impossible");
-    qmlRegisterUncreatableType<ArgsWeakWrapper>(NS, 1, 0, "ArgsWeakWrapper", "impossible");
     qmlRegisterType<Block>(NS, 1, 0, "Block");
     qmlRegisterType<Page>(NS, 1, 0, "Page");
     qmlRegisterType<PagePresenter>(NS, 1, 0, "PagePresenter");

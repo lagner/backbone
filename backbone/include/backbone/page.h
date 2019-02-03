@@ -3,7 +3,6 @@
 #include <QtQml/QQmlComponent>
 #include "pagepresenter.h"
 #include "container.h"
-#include "args.h"
 
 
 namespace Backbone {
@@ -35,7 +34,6 @@ public:
     Backbone::PagePresenter * presenter() const { return presenter_; }
 
     void setViewDelegate(QQmlComponent * delegate);
-    void setArgs(ArgsWeakWrapper args);
 
 signals:
     void viewDelegateChanged();

@@ -6,7 +6,6 @@
 #include <QtQml/QQmlEngine>
 #include <QtQml/QQmlProperty>
 #include <QtQuick/QQuickItem>
-#include <QtQuickTemplates2/private/qquickstackview_p.h>
 
 
 namespace Backbone {
@@ -107,6 +106,7 @@ void Page::setViewDelegate(QQmlComponent * viewDelegate)
 
 void Page::subscribe()
 {
+#if defined(STACK_VIEW_ENABLE)
     QQmlEngine * engine = qmlEngine(this);
     Q_ASSERT(engine);
 
@@ -140,9 +140,11 @@ void Page::subscribe()
     connect(
         proxy, &QQuickStackViewAttached::deactivated,
         presenter_, &PagePresenter::deactivated);
+#endif
 }
 
 
+/*
 void Page::setArgs(ArgsWeakWrapper wrapper)
 {
     if (ArgsPtr ptr = wrapper.args.lock())
@@ -159,6 +161,7 @@ void Page::setArgs(ArgsWeakWrapper wrapper)
         qWarning() << "args already died";
     }
 }
+*/
 
 
 } // namespace Backbone

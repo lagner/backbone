@@ -5,63 +5,59 @@ import Backbone 1.0 as Backbone
 import App.Presenters 1.0
 
 
-Backbone.Page { // container
+Rectangle { // view
+    id: view
 
-    Rectangle { // view
-        property IndexPagePresenter presenter;
+    property IndexPagePresenter presenter
 
+    color: "#f5f5f5"
+
+    ColumnLayout {
         anchors.fill: parent
-        color: "#f5f5f5"
+        anchors.margins: 30
+        spacing: 30
 
-        ColumnLayout {
-            anchors.fill: parent
-            anchors.margins: 30
-            spacing: 30
+        Item {
+            Layout.fillWidth: true
+            Layout.preferredHeight: 48
 
-            Item {
-                Layout.fillWidth: true
-                Layout.preferredHeight: 48
-
-                Row {
-                    Button {
-                        text: "collect"
-                        onClicked: presenter.collect()
-                    }
+            Row {
+                Button {
+                    text: "collect"
+                    onClicked: presenter.collect()
                 }
             }
+        }
 
-            TextField {
-                Layout.fillWidth: true
-                Layout.minimumHeight: 64
-                Layout.preferredHeight: 64
-                Layout.maximumHeight: 96
-                onAccepted: presenter.searchByText(text)
-            }
+        TextField {
+            Layout.fillWidth: true
+            Layout.minimumHeight: 64
+            Layout.preferredHeight: 64
+            Layout.maximumHeight: 96
+            onAccepted: presenter.searchByText(text)
+        }
 
-            Rectangle {
-                Layout.fillWidth: true
-                Layout.fillHeight: true
+        Rectangle {
+            Layout.fillWidth: true
+            Layout.fillHeight: true
 
 
-                Backbone.Block {
-                    property DetailPagePresenter presenter;
+            Backbone.Block {
+                property DetailPagePresenter presenter;
 
-                    property Component delegate: Item {
-
-                        Rectangle {
-                        }
-                    }
-
-                    width: parent.width
-                    height: 100
-                    anchors.bottom: parent.bottom
+                property Component delegate: Item {
 
                     Rectangle {
-                        anchors.fill: parent
-                        color: "lightblue"
                     }
+                }
 
+                width: parent.width
+                height: 100
+                anchors.bottom: parent.bottom
 
+                Rectangle {
+                    anchors.fill: parent
+                    color: "lightblue"
                 }
             }
         }

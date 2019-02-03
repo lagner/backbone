@@ -3,17 +3,24 @@
 #include <QtCore/QDebug>
 #include <QtQml/QQmlEngine>
 #include <QtQml/QQmlProperty>
-#include <QtQuickTemplates2/private/qquickstackview_p.h>
 #include <QtGui/QWindow>
-#include <backbone/args.h>
+
+#if defined(STACK_VIEW_ENABLE)
+    #include <QtQuickTemplates2/private/qquickstackview_p.h>
+#endif
+
 
 
 namespace {
 
-QQuickStackView * stackView(QObject * ptr)
-{
-    return qobject_cast<QQuickStackView*>(ptr);
-}
+
+#if defined(STACK_VIEW_ENABLE)
+
+    QQuickStackView * stackView(QObject * ptr)
+    {
+        return qobject_cast<QQuickStackView*>(ptr);
+    }
+#endif
 
 } // namespace
 
@@ -57,8 +64,11 @@ void Router::push(QString name, QVariantMap members)
 */
 
 
-void Router::push(QString url, QVariantMap args)
+void Router::push(QString url, QVariantMap)
 {
+    emit pushUrl(url);
+
+    /*
     auto incubator = cache_->create(QUrl(url), [a = std::move(args)] (QObject * object) mutable {
         auto item = qobject_cast<Container*>(object);
         if (!item)
@@ -80,6 +90,7 @@ void Router::push(QString url, QVariantMap args)
         emit pushPage(item);
     });
     connect(incubator, &Incubator::ready, incubator, &Incubator::deleteLater);
+    */
 }
 
 
@@ -94,12 +105,17 @@ int Router::depth() const
     if (!navigationView_)
         return 0;
 
-    return stackView(navigationView_)->depth();
+    #if defined(STACK_VIEW_ENABLE)
+        return stackView(navigationView_)->depth();
+    #else
+        return 0;
+    #endif
 }
 
 
 void Router::onWindowReady(QObject * root, const QUrl&)
 {
+#if defined(STACK_VIEW_ENABLE)
     qDebug() << "window is ready";
 
     // TODO: disconnect
@@ -123,6 +139,7 @@ void Router::onWindowReady(QObject * root, const QUrl&)
     }
 
     qDebug() << "it has pages: " << sv->depth();
+#endif
 }
 
 

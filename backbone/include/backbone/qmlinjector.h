@@ -11,9 +11,11 @@
 namespace Backbone {
 
 
-using Creator = std::function<QObject*()>;
+class PagePresenter;
+
+using InjectedObjectCreator = std::function<QObject*()>;
 using TypeName = std::string;
-using FactoryCollection = std::unordered_map<TypeName, Creator>;
+using FactoryCollection = std::unordered_map<TypeName, InjectedObjectCreator>;
 
 
 class QmlInjector
@@ -27,10 +29,15 @@ public:
 
     QObject * create(std::string name) const;
 
+    PagePresenter * injectPresenter(QObject * declarativeInstance) const;
+
+    bool inject(QObject * object, const QStringList & properties) const;
+
 private:
     const FactoryCollection creators_;
 };
 
 using QmlInjectorUnq = std::unique_ptr<QmlInjector>;
+using QmlInjectorPtr = std::shared_ptr<QmlInjector>;
 
 } // namespace Backbone

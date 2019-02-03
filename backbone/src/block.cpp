@@ -28,9 +28,6 @@ void Block::classBegin()
     Container::classBegin();
 
     QQmlProperty presenterProperty(this, QStringLiteral("presenter"));
-    qDebug() << "begin block presenter: " << presenterProperty.propertyTypeName();
-    qDebug() << "is writable " << presenterProperty.isWritable();
-    qDebug() << "is valid" << presenterProperty.isValid();
 }
 
 
@@ -46,9 +43,6 @@ void Block::componentComplete()
 
 
     QQmlProperty presenterProperty(this, QStringLiteral("presenter"));
-    qDebug() << "component complete block presenter: " << presenterProperty.propertyTypeName();
-    qDebug() << "is writable " << presenterProperty.isWritable();
-    qDebug() << "is valid" << presenterProperty.isValid();
 }
 
 

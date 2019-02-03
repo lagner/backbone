@@ -21,27 +21,30 @@ add_executable(${PROJECT_NAME}
     src/presenters/searchpagepresenter.h
     src/types.cpp
     src/types.h
-    src/usecases/downloaddatausecase.cpp
-    src/usecases/downloaddatausecase.h
     src/usecases/usersearchusecase.cpp
     src/usecases/usersearchusecase.h
     qml.qrc
 )
 
 
+
+find_package(Qt5
+    COMPONENTS
+        Core
+        QuickControls2
+    REQUIRED)
+
 target_link_libraries(${PROJECT_NAME}
     PUBLIC
         Qt5::Core
-        Qt5::Quick
+        Qt5::QuickControls2
         backbone::backbone
 )
 
 target_include_directories(${PROJECT_NAME}
     PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}/src
-        ${CMAKE_CURRENT_SOURCE_DIR}/deps
     )
-
 
 target_compile_definitions(${PROJECT_NAME}
     PRIVATE
