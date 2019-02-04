@@ -20,25 +20,13 @@ Window {
 
         function openPage(pageUrl) {
             var stackView = stack;
-            appController.create(pageUrl, function (page) {
+            router.createPage(pageUrl, function (page) {
                 if (stackView) {
                     stackView.push(page);
                 } else {
                     console.error("stackView is not available any more");
                 }
             });
-        }
-    }
-
-    Connections {
-        target: router
-
-        onPushPage: stack.openPage(page);
-        onPopPage: stack.pop();
-
-        onPushUrl: {
-            console.log("push url: ", url);
-            stack.openPage(url);
         }
     }
 }

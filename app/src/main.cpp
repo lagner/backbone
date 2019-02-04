@@ -4,6 +4,7 @@
 #include <backbone/qmlglobalscope.h>
 #include <backbone/qmlinjectorbuilder.h>
 #include <backbone/qmlinjector.h>
+#include <backbone/fwd.h>
 #include <QtCore/QDebug>
 #include <QtCore/QMetaObject>
 #include <QtCore/QObject>
@@ -31,58 +32,10 @@ const char * appQmlNamespace = "App.Presenters";
 } // namespace
 
 
-
-pc::future<std::unique_ptr<QObject>> createObject(QQmlEngine * engine, QUrl & uri, Backbone::QmlInjectorPtr injector)
-{
-    struct Data {
-        pc::promise<std::unique_ptr<QObject>> promise;
-        std::unique_ptr<QQmlComponent> component;
-        QQmlContext * parentContext = nullptr;
-        QMetaObject::Connection connection;
-        Backbone::QmlInjectorPtr injector;
-    };
-    auto data = std::make_shared<Data>();
-
-    data->component = std::make_unique<QQmlComponent>(engine, uri, QQmlComponent::Asynchronous);
-    data->connection = QObject::connect(
-        data->component.get(),
-        &QQmlComponent::statusChanged,
-        [data] (QQmlComponent::Status status) {
-            if (QQmlComponent::Ready == status)
-            {
-                auto obj = data->component->beginCreate(data->parentContext);
-
-                QQmlProperty presenterProp(obj, "presenter");
-                const auto type = std::string(presenterProp.propertyTypeName());
-
-                auto presenter = data->injector->create(type);
-
-                presenterProp.write(QVariant::fromValue(presenter));
-                // todo: handle error
-                // todo: inject properties
-                data->component->completeCreate();
-
-                data->promise.set_value(std::unique_ptr<QObject>(obj));
-                QObject::disconnect(data->connection);
-            }
-            else if (QQmlComponent::Error == status)
-            {
-                auto exception = std::make_exception_ptr(
-                    std::runtime_error(data->component->errorString().toStdString()));
-                data->promise.set_exception(exception);
-                QObject::disconnect(data->connection);
-            }
-        });
-
-    return data->promise.get_future();
-}
-
-
-
-Backbone::QmlInjectorUnq registerTypes()
+Backbone::QmlInjectorPtr registerTypes()
 {
     Backbone::import();
-    Backbone::QmlInjectorBuilder builder { QLatin1String(appQmlNamespace) };
+    Backbone::QmlInjectorBuilder builder { appQmlNamespace };
 
     builder.add<IndexPagePresenter>("IndexPagePresenter", [] {
         return new IndexPagePresenter();
@@ -98,7 +51,6 @@ Backbone::QmlInjectorUnq registerTypes()
 }
 
 
-
 int main(int argc, char *argv[])
 {
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
@@ -108,11 +60,10 @@ int main(int argc, char *argv[])
     QQmlApplicationEngine engine;
 
     auto injector = registerTypes();
-    auto windowUrl = QUrl(QStringLiteral("qrc:/qml/main.qml"));
+    auto cache = std::make_shared<Backbone::QmlComponentsCache>(&engine);
 
-    auto cache = new Backbone::QmlComponentsCache(&engine);
-    auto router = new Backbone::Router(&engine, cache, std::move(windowUrl));
-    auto controller = new Backbone::AppController(std::move(injector), cache, router, &engine);
+    auto router = new Backbone::Router(cache, injector, &engine);
+    auto controller = new Backbone::AppController(&engine);
 
     auto scope = new Backbone::QmlGlobalScope(controller, router, &engine);
 
