@@ -1,12 +1,7 @@
 #pragma once
-#include <stack>
-#include <QtCore/QHash>
 #include <QtCore/QObject>
-#include <QtQml/QQmlApplicationEngine>
-#include <QtQml/QQmlComponent>
-#include <QtQuick/QQuickItem>
-#include "qmlinjector.h"
-#include "qmlcomponentscache.h"
+#include <QtQml/QJSValue>
+#include "fwd.h"
 
 
 namespace Backbone {
@@ -19,33 +14,19 @@ class Router
 
 public:
     Router(
-        QQmlApplicationEngine * engine,
-        QmlComponentsCache * cache,
-        QUrl windowUrl);
+        QmlComponentsCachePtr cache,
+        QmlInjectorPtr injector,
+        QObject * parent);
 
-    void push(QString page, QVariantMap args);
-    void pop();
+    // todo: loading page property
 
-    int depth() const;
-
-signals:
-    void pushUrl(QUrl url);
-
-    // TODO: make it private
-    void pushPage(QQuickItem * page);
-    void popPage();
-
-    // FIXME: replace for QVariantMap
-    // void replace(QString page, Backbone::ArgsWeakWrapper args);
-
-private slots:
-    void onWindowReady(QObject * root, const QUrl&);
+public slots:
+    // todo: bool?
+    void createPage(const QUrl & uri, QJSValue callback);
 
 private:
-    QObject * navigationView_ = nullptr;
-    QmlComponentsCache * cache_ = nullptr;
-
-    std::stack<QQuickItem*> pages_;
+    QmlComponentsCachePtr cache_;
+    QmlInjectorPtr injector_;
 };
 
 
