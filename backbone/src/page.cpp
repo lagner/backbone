@@ -37,7 +37,7 @@ void Page::classBegin()
 void Page::componentComplete()
 {
     Container::componentComplete();
-
+    /*
     QQmlEngine * engine = qmlEngine(this);
     Q_ASSERT(engine);
 
@@ -82,6 +82,7 @@ void Page::componentComplete()
                  << " - presenter was not found";
     }
     delegate_->completeCreate();
+     */
 }
 
 

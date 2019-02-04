@@ -19,8 +19,6 @@ IndexPagePresenter::IndexPagePresenter(QObject * parent)
 void IndexPagePresenter::onCreate(QQuickItem * view, const QVariantMap & args)
 {
     PagePresenter::onCreate(view, args);
-
-    engine_ = QtQml::qmlEngine(view);
 }
 
 
@@ -31,13 +29,13 @@ void IndexPagePresenter::onDataReady()
     QVariantMap args;
     args["objectContext"] = QString("context sharedPtr");
 
-    if (!router)
-    {
-        qDebug() << "no router!";
-        return;
-    }
-
-    router->push("qrc:///qml/search.qml", std::move(args));
+//    if (!router)
+//    {
+//        qDebug() << "no router!";
+//        return;
+//    }
+//
+//    router->push("qrc:///qml/search.qml", std::move(args));
 }
 
 
@@ -45,27 +43,23 @@ void IndexPagePresenter::searchByText(QString pattern)
 {
     Q_UNUSED(pattern);
 
-    if (!router || !usecase_)
-    {
-        qWarning("route or usecase is not defined");
-        return;
-    }
-
-    usecase_->search(pattern);
-
-    QVariantMap args;
-    args.insert(QStringLiteral("pattern"), std::move(pattern));
-    args.insert(QStringLiteral("usecase"), QVariant::fromValue(usecase_));
-
-    router->push("qrc:///qml/search.qml", std::move(args));
+//    if (!router || !usecase_)
+//    {
+//        qWarning("route or usecase is not defined");
+//        return;
+//    }
+//
+//    usecase_->search(pattern);
+//
+//    QVariantMap args;
+//    args.insert(QStringLiteral("pattern"), std::move(pattern));
+//    args.insert(QStringLiteral("usecase"), QVariant::fromValue(usecase_));
+//
+//    router->push("qrc:///qml/search.qml", std::move(args));
 }
 
 
 void IndexPagePresenter::collect()
 {
-    if (engine_)
-    {
-        engine_->collectGarbage();
-    }
 }
 

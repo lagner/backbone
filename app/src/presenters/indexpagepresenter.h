@@ -20,7 +20,5 @@ private slots:
     void onDataReady();
 
 private:
-    QQmlEngine * engine_ = nullptr;
-
     UserSearchUsecasePtr usecase_;
 };

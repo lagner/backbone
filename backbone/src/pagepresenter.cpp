@@ -13,7 +13,6 @@ PagePresenter::PagePresenter(QObject * parent)
 
 void PagePresenter::onCreate(QQuickItem *, const QVariantMap &)
 {
-    qDebug() << "pagePreseter::onCreate " << objectName();
 }
 
 
@@ -40,13 +39,13 @@ void PagePresenter::deactivated()
 
 void PagePresenter::keyPressEvent(QKeyEvent * event)
 {
-    if (!router)
-        return;
-
     switch (event->key())
     {
     case Qt::Key_Escape:
     case Qt::Key_Back:
+        return;
+        // fixme: go back from page
+        /*
         if (router->depth() == 1)
         {
             qApp->quit();
@@ -56,13 +55,8 @@ void PagePresenter::keyPressEvent(QKeyEvent * event)
             router->pop();
         }
         return;
+         */
     }
-}
-
-
-void PagePresenter::setRouter(Router * router)
-{
-    this->router = router;
 }
 
 

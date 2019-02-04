@@ -1,9 +1,8 @@
 #pragma once
 #include <QtCore/QObject>
-#include "router.h"
 #include "presenter.h"
+#include "fwd.h"
 
-QT_FORWARD_DECLARE_CLASS(QQuickItem)
 
 namespace Backbone {
 
@@ -25,10 +24,7 @@ public:
 
     void keyPressEvent(QKeyEvent * event) override;
 
-    void setRouter(Router * router);
-
 protected:
-    Router * router = nullptr;
 
 private:
 };
