@@ -20,13 +20,11 @@ public:
     QmlComponentsCache(QQmlEngine * engine);
     ~QmlComponentsCache() = default;
 
-    Incubator * create(const QUrl & url);
-
-    Incubator * create(const QUrl & url, InjectorCallback injector);
-
-    // TODO: trimMemory slot
-
     pc::future<QQmlComponent*> resolve(const QUrl & url);
+
+public slots:
+    // todo: do I really need it?
+    void trimMemory();
 
 private:
     QQmlEngine * const engine_ = nullptr;

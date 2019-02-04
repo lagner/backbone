@@ -13,7 +13,7 @@ namespace Backbone {
 
 
 QmlComponentsCache::QmlComponentsCache(QQmlEngine * engine)
-    : QObject(engine)
+    : QObject(nullptr)
     , engine_(engine)
 {
     if (!engine_)
@@ -23,39 +23,9 @@ QmlComponentsCache::QmlComponentsCache(QQmlEngine * engine)
 }
 
 
-Incubator * QmlComponentsCache::create(const QUrl & url, InjectorCallback injector)
-{
-    Q_ASSERT(engine_);
-    QQmlContext * ctx = engine_->rootContext();
-    Incubator * incubator = nullptr;
-
-    auto it = cache_.find(url);
-    if (it != cache_.end())
-    {
-        incubator = new Incubator(it.value(), ctx, std::move(injector));
-    }
-    else
-    {
-        incubator = new Incubator(engine_, ctx, url, std::move(injector));
-        auto component = incubator->component();
-        component->setParent(this);
-        cache_.insert(url, component);
-    }
-    return incubator;
-}
-
-
-Incubator * QmlComponentsCache::create(const QUrl & url)
-{
-    return create(url, InjectorCallback());
-}
-
-
 pc::future<QQmlComponent*> QmlComponentsCache::resolve(const QUrl & url)
 {
     using Self = QPointer<QmlComponentsCache>;
-
-    qDebug() << "resolve url: " << url;
 
     const auto it = cache_.find(url);
     if (it != cache_.cend())
@@ -74,13 +44,13 @@ pc::future<QQmlComponent*> QmlComponentsCache::resolve(const QUrl & url)
         return pc::make_ready_future(component);
     }
 
-    struct Incubator {
+    struct IncubationMeta {
         QMetaObject::Connection connection;
         QQmlComponent * component;
         pc::promise<QQmlComponent*> promise;
     };
 
-    auto incubator = std::make_shared<Incubator>();
+    auto incubator = std::make_shared<IncubationMeta>();
 
     incubator->component = component;
     incubator->connection = connect(
@@ -106,7 +76,6 @@ pc::future<QQmlComponent*> QmlComponentsCache::resolve(const QUrl & url)
             }
             QObject::disconnect(incubator->connection);
         });
-
     Q_ASSERT(incubator->connection);
 
     return incubator->promise.get_future()
@@ -116,6 +85,12 @@ pc::future<QQmlComponent*> QmlComponentsCache::resolve(const QUrl & url)
             }
             return component;
         });
+}
+
+
+void QmlComponentsCache::trimMemory()
+{
+    cache_.clear();
 }
 
 
