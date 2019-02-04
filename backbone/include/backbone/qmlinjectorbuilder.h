@@ -1,10 +1,10 @@
 #pragma once
-#include <QtCore/QDebug>
-#include <QtCore/QHash>
-#include <QtQml/QQmlEngine>
 #include <string>
 #include <unordered_map>
-#include "qmlinjector.h"
+#include "fwd.h"
+
+// todo: you can better
+#include <QtQml/qqml.h>
 
 
 namespace Backbone {
@@ -13,26 +13,25 @@ namespace Backbone {
 class QmlInjectorBuilder
 {
 public:
-    QmlInjectorBuilder(QLatin1String ns /* = AppName */);
+    QmlInjectorBuilder(char const * const ns /* = AppName */);
 
     template<class TItem>
-    QmlInjectorBuilder & add(const char * qmlName, InjectedObjectCreator creator);
+    QmlInjectorBuilder & add(const char * qmlName, QmlInjectorFactory creator);
 
-    QmlInjectorUnq build();
+    QmlInjectorPtr build();
 
 private:
-    const QLatin1String qmlNamespace_;
-    std::unordered_map<std::string, InjectedObjectCreator> items_;
+    char const * const qmlNamespace_;
+    std::unordered_map<std::string, QmlInjectorFactory> items_;
 };
 
 
 template<typename TItem>
-QmlInjectorBuilder & QmlInjectorBuilder::add(const char * qmlName, InjectedObjectCreator creator)
+QmlInjectorBuilder & QmlInjectorBuilder::add(const char * qmlName, QmlInjectorFactory creator)
 {
-    qmlRegisterUncreatableType<TItem>(qmlNamespace_.data(), 1, 0, qmlName, "should be created in C++");
+    qmlRegisterUncreatableType<TItem>(qmlNamespace_, 1, 0, qmlName, "should be created in C++");
 
     std::string name = std::string(TItem::staticMetaObject.className()) + "*";
-    qDebug() << "register: " << name.c_str();
 
     items_.emplace(std::move(name), std::move(creator));
 
@@ -41,6 +40,4 @@ QmlInjectorBuilder & QmlInjectorBuilder::add(const char * qmlName, InjectedObjec
 
 
 } // namespace Backbone
-
-
 

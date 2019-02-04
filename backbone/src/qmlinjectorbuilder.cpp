@@ -1,18 +1,19 @@
 #include <backbone/qmlinjectorbuilder.h>
+#include <backbone/qmlinjector.h>
 
 
 namespace Backbone {
 
 
-QmlInjectorBuilder::QmlInjectorBuilder(QLatin1String ns)
-    : qmlNamespace_(std::move(ns))
+QmlInjectorBuilder::QmlInjectorBuilder(char const * const ns)
+    : qmlNamespace_(ns)
 {
 }
 
 
-QmlInjectorUnq QmlInjectorBuilder::build()
+QmlInjectorPtr QmlInjectorBuilder::build()
 {
-    return std::make_unique<QmlInjector>(std::move(items_));
+    return std::make_shared<QmlInjector>(std::move(items_));
 }
 
 
