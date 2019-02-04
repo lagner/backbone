@@ -29,6 +29,7 @@ add_library(${PROJECT_NAME}
     include/backbone/qmlinjector.h
     include/backbone/router.h
     include/backbone/executors.h
+    include/backbone/fwd.h
 
     src/appcontroller.cpp
     src/applicationframe.cpp
