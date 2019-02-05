@@ -25,6 +25,8 @@ public:
 
     bool inject(QObject * object, const QStringList & properties) const;
 
+    QObject * inject(QObject * object, const QString & property) const;
+
 private:
     const FactoryCollection creators_;
 };

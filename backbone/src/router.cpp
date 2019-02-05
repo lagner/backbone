@@ -49,7 +49,7 @@ void Router::createPage(const QUrl & uri, QJSValue callback)
 
                       auto object = component->beginCreate(context);
                       // todo: do we need parent?
-                      injector_->inject(object, QStringList() << "presenter");
+                      injector_->inject(object, QStringLiteral("presenter"));
                       component->completeCreate();
 
                       arg = engine->toScriptValue(object);
