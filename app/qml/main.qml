@@ -21,6 +21,10 @@ Window {
         function openPage(pageUrl) {
             var stackView = stack;
             router.createPage(pageUrl, function (page) {
+                if (!page) {
+                    console.error("page ", pageUrl, " was not created");
+                    return;
+                }
                 if (stackView) {
                     stackView.push(page);
                 } else {
