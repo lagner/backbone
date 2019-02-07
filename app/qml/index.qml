@@ -5,12 +5,10 @@ import Backbone 1.0 as Backbone
 import App.Presenters 1.0
 
 
-Rectangle { // view
+Backbone.Page { // view
     id: view
 
     property IndexPagePresenter presenter
-
-    color: "#f5f5f5"
 
     ColumnLayout {
         anchors.fill: parent
