@@ -6,56 +6,57 @@ import App.Presenters 1.0
 
 
 Backbone.Page { // view
-    id: view
+    id: page
 
+    property QtObject stackView
     property IndexPagePresenter presenter
 
     ColumnLayout {
-        anchors.fill: parent
-        anchors.margins: 30
-        spacing: 30
-
-        Item {
-            Layout.fillWidth: true
-            Layout.preferredHeight: 48
-
-            Row {
-                Button {
-                    text: "collect"
-                    onClicked: presenter.collect()
-                }
-            }
+        anchors {
+            fill: parent
+            margins: 10
         }
+        spacing: 16
 
         TextField {
+            width: parent.width
             Layout.fillWidth: true
             Layout.minimumHeight: 64
             Layout.preferredHeight: 64
             Layout.maximumHeight: 96
             onAccepted: presenter.searchByText(text)
+
+            placeholderText: "search smth"
         }
 
-        Rectangle {
+        ListView {
             Layout.fillWidth: true
             Layout.fillHeight: true
+            spacing: 8
+            clip: true
 
+            model: ListModel {
+                ListElement { }
+                ListElement { }
+                ListElement { }
+                ListElement { }
+                ListElement { }
+                ListElement { }
+                ListElement { }
+            }
 
-            Backbone.Block {
-                property DetailPagePresenter presenter;
+            delegate: Rectangle {
+                width: ListView.view.width
+                height: 36
+                color: !!(model.index % 2)
+                    ? "lightgreen"
+                    : "lightblue"
 
-                property Component delegate: Item {
-
-                    Rectangle {
-                    }
-                }
-
-                width: parent.width
-                height: 100
-                anchors.bottom: parent.bottom
-
-                Rectangle {
+                MouseArea {
                     anchors.fill: parent
-                    color: "lightblue"
+                    onClicked: {
+                        stackView.openPage(Qt.resolvedUrl("search.qml"))
+                    }
                 }
             }
         }

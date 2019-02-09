@@ -5,11 +5,9 @@ import Backbone 1.0 as Backbone
 
 
 Window {
-    readonly property alias stackView: stack
-
     visible: true
-    width: 640
-    height: 480
+    width: 400
+    height: 540
     title: qsTr("DI Application")
 
     StackView {
@@ -20,13 +18,16 @@ Window {
 
         function openPage(pageUrl) {
             var stackView = stack;
+
             router.createPage(pageUrl, function (page) {
                 if (!page) {
                     console.error("page ", pageUrl, " was not created");
                     return;
                 }
                 if (stackView) {
-                    stackView.push(page);
+                    stackView.push(page, {
+                        "stackView": stackView,
+                    });
                 } else {
                     console.error("stackView is not available any more");
                 }
