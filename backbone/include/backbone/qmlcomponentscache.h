@@ -23,8 +23,6 @@ public:
     pc::future<QQmlComponent*> resolve(const QUrl & url);
 
 public slots:
-    // todo: do I really need it?
-    void trimMemory();
 
 private:
     QQmlEngine * const engine_ = nullptr;

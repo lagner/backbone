@@ -88,10 +88,4 @@ pc::future<QQmlComponent*> QmlComponentsCache::resolve(const QUrl & url)
 }
 
 
-void QmlComponentsCache::trimMemory()
-{
-    cache_.clear();
-}
-
-
 } // namespace Backbone
