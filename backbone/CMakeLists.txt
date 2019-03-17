@@ -30,6 +30,7 @@ add_library(${PROJECT_NAME}
     include/backbone/router.h
     include/backbone/executors.h
     include/backbone/fwd.h
+    include/backbone/delegatebuilder.h
 
     src/appcontroller.cpp
     src/applicationframe.cpp
@@ -47,6 +48,7 @@ add_library(${PROJECT_NAME}
     src/qmlinjector.cpp
     src/router.cpp
     src/executors.cpp
+    src/delegatebuilder.cpp
 )
 add_library(${PROJECT_NAME}::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
 
