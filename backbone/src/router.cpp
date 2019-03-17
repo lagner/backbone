@@ -2,6 +2,8 @@
 #include <backbone/qmlcomponentscache.h>
 #include <backbone/qmlinjector.h>
 #include <backbone/router.h>
+#include <backbone/page.h>
+#include <backbone/pagepresenter.h>
 #include <portable_concurrency/future>
 #include <QtCore/QDebug>
 #include <QtQml/QQmlEngine>
@@ -49,7 +51,14 @@ void Router::createPage(const QUrl & uri, QJSValue callback)
 
                       auto object = component->beginCreate(context);
                       // todo: do we need parent?
-                      injector_->inject(object, QStringLiteral("presenter"));
+                      if (auto injected = injector_->inject(object, QStringLiteral("presenter")))
+                      {
+                          if (auto presenter = qobject_cast<PagePresenter*>(injected))
+                          {
+                              auto view = qobject_cast<QQuickItem*>(object);
+                              presenter->onCreate(view, QVariantMap());
+                          }
+                      }
                       component->completeCreate();
 
                       arg = engine->toScriptValue(object);
