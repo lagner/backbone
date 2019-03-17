@@ -1,6 +1,9 @@
 #include <backbone/qmlinjector.h>
 #include <QtCore/QStringList>
 #include <QtQml/QQmlProperty>
+#include <QtCore/QMetaObject>
+#include <QtCore/QMetaProperty>
+#include <QtCore/QDebug>
 
 
 namespace Backbone {
@@ -44,7 +47,7 @@ QObject * QmlInjector::inject(QObject *object, const QString & propertyName) con
         return nullptr;
     }
 
-    auto instance = (it->second)();
+    auto instance = (it->second)(QVariant());
     instance->setParent(object);
 
     if (!property.write(QVariant::fromValue(instance)))
@@ -54,6 +57,36 @@ QObject * QmlInjector::inject(QObject *object, const QString & propertyName) con
     }
 
     return instance;
+}
+
+
+void QmlInjector::inject(QObject * object, const QVariant & context) const
+{
+    if (!object) // error message
+        return;
+
+    const auto meta = object->metaObject();
+
+    for (int i = meta->propertyOffset(); i < meta->propertyCount(); ++i)
+    {
+        auto property = meta->property(i);
+        if (const char * name = property.name())
+        {
+            if (*name != '$')
+                continue;
+
+            auto it = creators_.find(property.typeName());
+            if (it == creators_.cend())
+            {
+                qWarning("there is no factory for %s", qPrintable(name));
+                return;
+            }
+            auto instance = (it->second)(context);
+            instance->setParent(object);
+            // todo: check error code
+            property.write(object, QVariant::fromValue(instance));
+        }
+    }
 }
 
 

@@ -1,6 +1,6 @@
 #pragma once
 #include <string>
-#include <unordered_map>
+#include <QtCore/QDebug>
 #include "fwd.h"
 
 // todo: you can better
@@ -16,22 +16,24 @@ public:
     QmlInjectorBuilder(char const * const ns /* = AppName */);
 
     template<class TItem>
-    QmlInjectorBuilder & add(const char * qmlName, QmlInjectorFactory creator);
+    QmlInjectorBuilder & add(QmlInjectorFactory creator);
 
     QmlInjectorPtr build();
 
 private:
     char const * const qmlNamespace_;
-    std::unordered_map<std::string, QmlInjectorFactory> items_;
+    FactoryCollection items_;
 };
 
 
 template<typename TItem>
-QmlInjectorBuilder & QmlInjectorBuilder::add(const char * qmlName, QmlInjectorFactory creator)
+QmlInjectorBuilder & QmlInjectorBuilder::add(QmlInjectorFactory creator)
 {
-    qmlRegisterUncreatableType<TItem>(qmlNamespace_, 1, 0, qmlName, "should be created in C++");
+    auto className = TItem::staticMetaObject.className();
 
-    std::string name = std::string(TItem::staticMetaObject.className()) + "*";
+    qmlRegisterUncreatableType<TItem>(qmlNamespace_, 1, 0, className, "should be created in C++");
+
+    std::string name = std::string(className) + "*";
 
     items_.emplace(std::move(name), std::move(creator));
 

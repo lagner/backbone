@@ -1,5 +1,4 @@
 #pragma once
-#include <unordered_map>
 #include "fwd.h"
 
 
@@ -12,10 +11,6 @@ namespace Backbone {
 class PagePresenter;
 
 
-using TypeName = std::string;
-using FactoryCollection = std::unordered_map<TypeName, QmlInjectorFactory>;
-
-
 class QmlInjector
 {
 public:
@@ -26,6 +21,8 @@ public:
     bool inject(QObject * object, const QStringList & properties) const;
 
     QObject * inject(QObject * object, const QString & property) const;
+
+    void inject(QObject * object, const QVariant & ctx) const;
 
 private:
     const FactoryCollection creators_;

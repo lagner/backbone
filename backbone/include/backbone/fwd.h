@@ -1,7 +1,10 @@
 #pragma once
-#include <memory>
 #include <functional>
+#include <map>
+#include <memory>
+#include <string>
 #include <QtCore/QtGlobal>
+#include <QtCore/QVariant>
 
 
 QT_FORWARD_DECLARE_CLASS(QObject)
@@ -20,6 +23,8 @@ using QmlInjectorPtr = std::shared_ptr<QmlInjector>;
 class Router;
 using RouterPtr = std::shared_ptr<Router>;
 
-using QmlInjectorFactory = std::function<QObject*()>;
+using TypeName = std::string;
+using QmlInjectorFactory = std::function<QObject*(QVariant)>;
+using FactoryCollection = std::map<TypeName, QmlInjectorFactory>;
 
 } // namespace Backbone
