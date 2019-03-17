@@ -5,6 +5,9 @@
 namespace Backbone {
 
 
+class PagePresenter;
+
+
 // TODO: set background color
 class Page
     : public QQuickItem
@@ -19,7 +22,10 @@ public:
     void componentComplete() override;
     void keyPressEvent(QKeyEvent * event) override;
 
+    void setPagePresenter(PagePresenter * presenter);
+
 private:
+    PagePresenter * presenter_ = nullptr;
 };
 
 

@@ -3,6 +3,7 @@
 #include <backbone/global.h>
 #include <backbone/page.h>
 #include <backbone/pagepresenter.h>
+#include <backbone/delegatebuilder.h>
 #include <QtQml/qqml.h>
 
 namespace {
@@ -23,6 +24,7 @@ void import()
     qmlRegisterType<Block>(NS, 1, 0, "Block");
     qmlRegisterType<Page>(NS, 1, 0, "Page");
     qmlRegisterType<PagePresenter>(NS, 1, 0, "PagePresenter");
+    qmlRegisterType<DelegateBuilder>(NS, 1, 0, "DelegateBuilder");
 }
 
 

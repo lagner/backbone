@@ -22,6 +22,7 @@ public:
     virtual void deactivating();
     virtual void deactivated();
 
+public slots:
     void keyPressEvent(QKeyEvent * event) override;
 
 protected:

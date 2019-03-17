@@ -20,6 +20,8 @@ public:
 
     // todo: loading page property
 
+    QmlInjectorPtr injector() const { return injector_; }
+
 public slots:
     // todo: bool?
     void createPage(const QUrl & uri, QJSValue callback);

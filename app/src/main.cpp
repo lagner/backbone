@@ -20,6 +20,8 @@
 #include "presenters/detailpagepresenter.h"
 #include "presenters/indexpagepresenter.h"
 #include "presenters/searchpagepresenter.h"
+#include "presenters/branchpresenter.h"
+#include "presenters/schedulepresenter.h"
 #include "types.h"
 
 
@@ -37,17 +39,28 @@ Backbone::QmlInjectorPtr registerTypes()
     Backbone::import();
     Backbone::QmlInjectorBuilder builder { appQmlNamespace };
 
-    builder.add<IndexPagePresenter>("IndexPagePresenter", [] {
+    builder.add<IndexPagePresenter>([] (QVariant) {
         return new IndexPagePresenter();
     });
-    builder.add<DetailPagePresenter>("DetailPagePresenter", [] {
+    builder.add<DetailPagePresenter>([] (QVariant) {
         return new DetailPagePresenter();
     });
-    builder.add<SearchPagePresenter>("SearchPagePresenter", [] {
+    builder.add<SearchPagePresenter>([] (QVariant) {
         return new SearchPagePresenter();
+    });
+    builder.add<BranchPresenter>([] (QVariant) {
+        // @uri App.Presenters
+        // qmlRegisterUncreatableType<BranchPresenter>("App.Presenters", 1, 0, "BranchPresenter", "");
+        return new BranchPresenter();
+    });
+    builder.add<SchedulePresenter>([] (QVariant) {
+        // @uri App.Presenters
+        // qmlRegisterUncreatableType<SchedulePresenter>("App.Presenters", 1, 0, "SchedulePresenter", "");
+        return new SchedulePresenter();
     });
 
     return builder.build();
+
 }
 
 
@@ -65,9 +78,9 @@ int main(int argc, char *argv[])
     auto router = new Backbone::Router(cache, injector, &engine);
     auto controller = new Backbone::AppController(&engine);
 
-    auto scope = new Backbone::QmlGlobalScope(controller, router, &engine);
-
     QQmlContext * rootContext = engine.rootContext();
+    auto scope = new Backbone::QmlGlobalScope(controller, router, rootContext);
+
     rootContext->setContextObject(scope);
 
     engine.load(QUrl(QStringLiteral("qrc:/qml/main.qml")));

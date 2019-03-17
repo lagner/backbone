@@ -1,5 +1,7 @@
 #include <backbone/pagepresenter.h>
 #include <QtQuick/QQuickItem>
+#include <QtQml/QQmlProperty>
+
 
 
 namespace Backbone {
@@ -11,8 +13,12 @@ PagePresenter::PagePresenter(QObject * parent)
 }
 
 
-void PagePresenter::onCreate(QQuickItem *, const QVariantMap &)
+void PagePresenter::onCreate(QQuickItem * view, const QVariantMap &)
 {
+    QQmlProperty stackViewProperty(view, "StackView.view", qmlContext(view));
+    auto stackView = stackViewProperty.read().value<QObject*>();
+
+    qDebug() << "onCreate: stackView " << !!stackView;
 }
 
 
@@ -43,6 +49,7 @@ void PagePresenter::keyPressEvent(QKeyEvent * event)
     {
     case Qt::Key_Escape:
     case Qt::Key_Back:
+        qDebug() << "key back pressed";
         return;
         // fixme: go back from page
         /*

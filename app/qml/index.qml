@@ -36,29 +36,49 @@ Backbone.Page { // view
             clip: true
 
             model: ListModel {
-                ListElement { }
-                ListElement { }
-                ListElement { }
-                ListElement { }
-                ListElement { }
-                ListElement { }
-                ListElement { }
+                ListElement { text: "wow" ; type: "branch" }
+                ListElement { text: "wow" ; type: "branch" }
+                ListElement { text: "wow" ; type: "branch" }
+                ListElement { text: "wow" ; type: "branch" }
+                ListElement { text: "wow" ; type: "branch" }
+                ListElement { text: "wow" ; type: "branch" }
             }
 
-            delegate: Rectangle {
-                width: ListView.view.width
-                height: 36
-                color: !!(model.index % 2)
-                    ? "lightgreen"
-                    : "lightblue"
+            delegate: Backbone.DelegateBuilder {
 
-                MouseArea {
-                    anchors.fill: parent
-                    onClicked: {
-                        stackView.openPage(Qt.resolvedUrl("search.qml"))
+                width: parent.width
+                height: childrenRect.height
+
+                context: model.type
+
+                delegate: Rectangle {
+                    property BranchPresenter $branchPresenter;
+                    property SchedulePresenter $schedulePresenter;
+
+                    width: parent.width
+                    height: 100
+                    color: "lightblue"
+
+                    Component.onCompleted: {
+                        console.log(model.index, " injected: ", $branchPresenter, $schedulePresenter);
                     }
                 }
             }
         }
+    }
+
+    Component {
+        id: branchMiniCard
+        Item {}
+    }
+
+    Component {
+        id: buildingMiniCard
+        Item {}
+    }
+
+    Component {
+        id: settlementMiniCard
+        Item {}
     }
 }

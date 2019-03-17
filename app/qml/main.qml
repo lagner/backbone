@@ -8,7 +8,7 @@ Window {
     visible: true
     width: 400
     height: 540
-    title: qsTr("DI Application")
+    title: qsTr("Backbone test app")
 
     StackView {
         id: stack

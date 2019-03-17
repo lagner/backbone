@@ -1,6 +1,7 @@
 #include <backbone/appcontroller.h>
 #include <backbone/qmlglobalscope.h>
 #include <backbone/page.h>
+#include <backbone/pagepresenter.h>
 #include <QtCore/QDebug>
 #include <QtQml/QQmlContext>
 #include <QtQml/QQmlEngine>
@@ -34,8 +35,17 @@ void Page::componentComplete()
 }
 
 
-void Page::keyPressEvent(QKeyEvent * )
+void Page::keyPressEvent(QKeyEvent * event)
 {
+    if (presenter_)
+    {
+        presenter_->keyPressEvent(event);
+    }
+}
+
+void Page::setPagePresenter(PagePresenter * presenter)
+{
+    presenter_ = presenter;
 }
 
 
