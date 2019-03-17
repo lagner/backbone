@@ -19,6 +19,10 @@ add_executable(${PROJECT_NAME}
     src/presenters/searchpagepresenter.cpp
     src/presenters/searchpagepresenter.h
     src/presenters/searchpagepresenter.h
+    src/presenters/branchpresenter.h
+    src/presenters/branchpresenter.cpp
+    src/presenters/schedulepresenter.h
+    src/presenters/schedulepresenter.cpp
     src/types.cpp
     src/types.h
     src/usecases/usersearchusecase.cpp
