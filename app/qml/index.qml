@@ -3,6 +3,7 @@ import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.3
 import Backbone 1.0 as Backbone
 import App.Presenters 1.0
+import "cards" as Cards
 
 
 Backbone.Page { // view
@@ -30,6 +31,14 @@ Backbone.Page { // view
         }
 
         ListView {
+            id: listView
+
+            readonly property var delegates: {
+                "branch": branchMiniCard,
+                "building": buildingMiniCard,
+                "settlement": settlementMiniCard,
+            }
+
             Layout.fillWidth: true
             Layout.fillHeight: true
             spacing: 8
@@ -50,26 +59,14 @@ Backbone.Page { // view
                 height: childrenRect.height
 
                 context: model.type
-
-                delegate: Rectangle {
-                    property BranchPresenter $branchPresenter;
-                    property SchedulePresenter $schedulePresenter;
-
-                    width: parent.width
-                    height: 100
-                    color: "lightblue"
-
-                    Component.onCompleted: {
-                        console.log(model.index, " injected: ", $branchPresenter, $schedulePresenter);
-                    }
-                }
+                delegate: listView.delegates[model.type]
             }
         }
     }
 
     Component {
         id: branchMiniCard
-        Item {}
+        Cards.BranchMini {}
     }
 
     Component {

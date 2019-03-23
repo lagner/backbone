@@ -25,6 +25,7 @@ void DelegateBuilder::setDelegate(QQmlComponent * delegate)
     if (delegate_ != delegate)
     {
         delegate_ = delegate;
+        qDebug() << "delegate: " << " -- " << delegate->url();
         emit delegateChanged();
     }
 }
