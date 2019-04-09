@@ -25,8 +25,8 @@ add_library(${PROJECT_NAME}
     include/backbone/presenter.h
     include/backbone/qmlcomponentscache.h
     include/backbone/qmlglobalscope.h
-    include/backbone/qmlinjectorbuilder.h
-    include/backbone/qmlinjector.h
+    include/backbone/injectorbuilder.h
+    include/backbone/injector.h
     include/backbone/router.h
     include/backbone/executors.h
     include/backbone/fwd.h
@@ -44,8 +44,8 @@ add_library(${PROJECT_NAME}
     src/presenter.cpp
     src/qmlcomponentscache.cpp
     src/qmlglobalscope.cpp
-    src/qmlinjectorbuilder.cpp
-    src/qmlinjector.cpp
+    src/injectorbuilder.cpp
+    src/injector.cpp
     src/router.cpp
     src/executors.cpp
     src/delegatebuilder.cpp
