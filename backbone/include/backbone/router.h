@@ -15,12 +15,12 @@ class Router
 public:
     Router(
         QmlComponentsCachePtr cache,
-        QmlInjectorPtr injector,
+        InjectorPtr injector,
         QObject * parent);
 
     // todo: loading page property
 
-    QmlInjectorPtr injector() const { return injector_; }
+    InjectorPtr injector() const { return injector_; }
 
 public slots:
     // todo: bool?
@@ -28,7 +28,7 @@ public slots:
 
 private:
     QmlComponentsCachePtr cache_;
-    QmlInjectorPtr injector_;
+    InjectorPtr injector_;
 };
 
 

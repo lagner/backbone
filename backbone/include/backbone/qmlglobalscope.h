@@ -21,7 +21,7 @@ public:
 
     Router * router() const { return router_; }
 
-    QmlInjectorPtr injector() const { return !!router_ ? router_->injector() : nullptr; }
+    InjectorPtr injector() const { return !!router_ ? router_->injector() : nullptr; }
 
 private:
     AppController * appController_ = nullptr;

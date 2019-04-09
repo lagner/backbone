@@ -1,6 +1,6 @@
 #include <backbone/executors.h>
 #include <backbone/qmlcomponentscache.h>
-#include <backbone/qmlinjector.h>
+#include <backbone/injector.h>
 #include <backbone/router.h>
 #include <backbone/page.h>
 #include <backbone/pagepresenter.h>
@@ -18,7 +18,7 @@ namespace {
 namespace Backbone {
 
 
-Router::Router(QmlComponentsCachePtr cache, QmlInjectorPtr injector, QObject * parent)
+Router::Router(QmlComponentsCachePtr cache, InjectorPtr injector, QObject * parent)
     : QObject(parent)
     , cache_(cache)
     , injector_(injector)
@@ -51,7 +51,9 @@ void Router::createPage(const QUrl & uri, QJSValue callback)
 
                       auto object = component->beginCreate(context);
                       // todo: do we need parent?
-                      if (auto injected = injector_->inject(object, QStringLiteral("presenter")))
+                      injector_->inject(object, QVariant());
+                      /*
+                      if (auto injected = injector_->inject(object, QVariant())
                       {
                           if (auto presenter = qobject_cast<PagePresenter*>(injected))
                           {
@@ -59,6 +61,8 @@ void Router::createPage(const QUrl & uri, QJSValue callback)
                               presenter->onCreate(view, QVariantMap());
                           }
                       }
+                      */
+
                       component->completeCreate();
 
                       arg = engine->toScriptValue(object);

@@ -1,7 +1,7 @@
 #pragma once
 #include <QtCore/QObject>
 #include <backbone/pagepresenter.h>
-#include <backbone/qmlinjector.h>
+#include <backbone/injector.h>
 #include <QtQml/QJSValue>
 #include "global.h"
 #include "fwd.h"

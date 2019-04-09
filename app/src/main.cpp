@@ -2,8 +2,8 @@
 #include <backbone/global.h>
 #include <backbone/qmlcomponentscache.h>
 #include <backbone/qmlglobalscope.h>
-#include <backbone/qmlinjectorbuilder.h>
-#include <backbone/qmlinjector.h>
+#include <backbone/injectorbuilder.h>
+#include <backbone/injector.h>
 #include <backbone/fwd.h>
 #include <QtCore/QDebug>
 #include <QtCore/QMetaObject>
@@ -15,6 +15,7 @@
 #include <QtQml/qqml.h>
 #include <QtQml/QQmlProperty>
 #include <QtQuickControls2/QQuickStyle>
+#include <portable_concurrency/functional>
 #include <portable_concurrency/future>
 
 #include "presenters/detailpagepresenter.h"
@@ -34,33 +35,32 @@ const char * appQmlNamespace = "App.Presenters";
 } // namespace
 
 
-Backbone::QmlInjectorPtr registerTypes()
+Backbone::InjectorPtr registerTypes()
 {
     Backbone::import();
-    Backbone::QmlInjectorBuilder builder { appQmlNamespace };
+    Backbone::InjectorBuilder builder { appQmlNamespace };
 
     builder.add<IndexPagePresenter>([] (QVariant) {
-        return new IndexPagePresenter();
+        return std::make_unique<IndexPagePresenter>();
     });
     builder.add<DetailPagePresenter>([] (QVariant) {
-        return new DetailPagePresenter();
+        return std::make_unique<DetailPagePresenter>();
     });
     builder.add<SearchPagePresenter>([] (QVariant) {
-        return new SearchPagePresenter();
+        return std::make_unique<SearchPagePresenter>();
     });
     builder.add<BranchPresenter>([] (QVariant) {
-        // @uri App.Presenters
-        // qmlRegisterUncreatableType<BranchPresenter>("App.Presenters", 1, 0, "BranchPresenter", "");
-        return new BranchPresenter();
+        return std::make_unique<BranchPresenter>();
     });
     builder.add<SchedulePresenter>([] (QVariant) {
-        // @uri App.Presenters
-        // qmlRegisterUncreatableType<SchedulePresenter>("App.Presenters", 1, 0, "SchedulePresenter", "");
-        return new SchedulePresenter();
+        return std::make_unique<SchedulePresenter>();
     });
 
-    return builder.build();
+    // @uri App.Presenters
+    qmlRegisterUncreatableType<BranchPresenter>("App.Presenters", 1, 0, "BranchPresenter", "");
+    qmlRegisterUncreatableType<SchedulePresenter>("App.Presenters", 1, 0, "SchedulePresenter", "");
 
+    return builder.build();
 }
 
 

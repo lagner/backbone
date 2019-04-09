@@ -5,6 +5,7 @@
 #include <string>
 #include <QtCore/QtGlobal>
 #include <QtCore/QVariant>
+#include <portable_concurrency/functional_fwd>
 
 
 QT_FORWARD_DECLARE_CLASS(QObject)
@@ -17,14 +18,16 @@ namespace Backbone {
 class QmlComponentsCache;
 using QmlComponentsCachePtr = std::shared_ptr<QmlComponentsCache>;
 
-class QmlInjector;
-using QmlInjectorPtr = std::shared_ptr<QmlInjector>;
+class Injector;
+using InjectorPtr = std::shared_ptr<Injector>;
 
 class Router;
 using RouterPtr = std::shared_ptr<Router>;
 
-using TypeName = std::string;
-using QmlInjectorFactory = std::function<QObject*(QVariant)>;
-using FactoryCollection = std::map<TypeName, QmlInjectorFactory>;
+using InjectorTypeId = std::string;
+using InjectorFactory = pc::unique_function<std::unique_ptr<QObject>(QVariant)>;
+using InjectorContextProvider = pc::unique_function<QVariant(const InjectorTypeId &)>;
+
+using FactoryCollection = std::map<InjectorTypeId, InjectorFactory>;
 
 } // namespace Backbone
