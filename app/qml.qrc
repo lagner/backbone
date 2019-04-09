@@ -6,5 +6,6 @@
         <file>qml/welcome.qml</file>
         <file>qml/search.qml</file>
         <file>qml/cards/BranchMini.qml</file>
+        <file>qml/dashboard.qml</file>
     </qresource>
 </RCC>
