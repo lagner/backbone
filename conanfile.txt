@@ -1,6 +1,6 @@
 [requires]
 qt/5.12.0@bincrafters/stable
-portable_concurrency/0.7.0@VestniK/stable
+portable_concurrency/0.9.0@VestniK/stable
 gtest/1.8.1@bincrafters/stable
 
 [generators]
