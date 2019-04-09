@@ -4,6 +4,7 @@
 #include <backbone/page.h>
 #include <backbone/pagepresenter.h>
 #include <backbone/delegatebuilder.h>
+#include <backbone/injectorblock.h>
 #include <QtQml/qqml.h>
 
 namespace {
@@ -25,6 +26,7 @@ void import()
     qmlRegisterType<Page>(NS, 1, 0, "Page");
     qmlRegisterType<PagePresenter>(NS, 1, 0, "PagePresenter");
     qmlRegisterType<DelegateBuilder>(NS, 1, 0, "DelegateBuilder");
+    qmlRegisterType<InjectorBlock>(NS, 1, 0, "InjectorBlock");
 }
 
 
